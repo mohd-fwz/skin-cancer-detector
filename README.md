@@ -117,28 +117,9 @@ This tool is for educational purposes only and should **NOT** be used as a subst
 
 This project is developed and maintained by our dedicated team:
 
-<p align="left">
-  <a href="https://github.com/mohd-fwz" target="_blank" style="text-align:center; display:inline-block; margin-right:15px;">
-    <img src="https://github.com/mohd-fwz.png" width="70" height="70" alt="mohd-fwz" style="border-radius:50%;" />
-    <br />
-    <sub><b>mohd-fwz</b></sub>
-  </a>
-  <a href="https://github.com/Amjuks" target="_blank" style="text-align:center; display:inline-block; margin-right:15px;">
-    <img src="https://github.com/Amjuks.png" width="70" height="70" alt="Amjuks" style="border-radius:50%;" />
-    <br />
-    <sub><b>Amjuks</b></sub>
-  </a>
-  <a href="https://github.com/aaradhyasaxena0606" target="_blank" style="text-align:center; display:inline-block; margin-right:15px;">
-    <img src="https://github.com/aaradhyasaxena0606.png" width="70" height="70" alt="aaradhyasaxena0606" style="border-radius:50%;" />
-    <br />
-    <sub><b>aaradhyasaxena0606</b></sub>
-  </a>
-  <a href="https://github.com/Pavan-484" target="_blank" style="text-align:center; display:inline-block;">
-    <img src="https://github.com/Pavan-484.png" width="70" height="70" alt="Pavan-484" style="border-radius:50%;" />
-    <br />
-    <sub><b>Pavan-484</b></sub>
-  </a>
-</p>
+| [<img src="https://github.com/mohd-fwz.png" width="70" alt="mohd-fwz" style="border-radius:50%;" />](https://github.com/mohd-fwz) | [<img src="https://github.com/Amjuks.png" width="70" alt="Amjuks" style="border-radius:50%;" />](https://github.com/Amjuks) | [<img src="https://github.com/aaradhyasaxena0606.png" width="70" alt="aaradhyasaxena0606" style="border-radius:50%;" />](https://github.com/aaradhyasaxena0606) | [<img src="https://github.com/Pavan-484.png" width="70" alt="Pavan-484" style="border-radius:50%;" />](https://github.com/Pavan-484) |
+|---|---|---|---|
+| [**mohd-fwz**](https://github.com/mohd-fwz) | [**Amjuks**](https://github.com/Amjuks) | [**aaradhyasaxena0606**](https://github.com/aaradhyasaxena0606) | [**Pavan-484**](https://github.com/Pavan-484) |
 
 ---
 
