@@ -34,3 +34,7 @@ Thumbs.db
 model/*.h5
 model/*.pkl
 model/*.pth
+
+# GradCAM outputs
+gradcam_outputs/
+static/images/gradcam/

@@ -5,6 +5,7 @@ import random
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv 
 from gemini_helper import generate_medical_explanation
+from model.prediction import predict_with_gradcam
 
 load_dotenv()
 
@@ -13,6 +14,7 @@ app = Flask(__name__)
 # Configuration
 app.config['SECRET_KEY'] = 'your-secret-key-here-change-this'
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['GRADCAM_FOLDER'] = 'static/images/gradcam'  # New folder for GradCAM images
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024  # 5MB max file size
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
@@ -134,15 +136,40 @@ def predict():
         filename = uploaded_file.filename if uploaded_file else None
         
         # ============================================
-        # 2. GET ML MODEL PREDICTION
+        # 2. GET ML MODEL PREDICTION WITH GRADCAM
         # ============================================
         
-        # DUMMY PREDICTION (Your friend will replace this)
-        prediction = dummy_ml_prediction(filename)
-        
-        # TODO: When your friend integrates the model, replace above with:
-        # from model.predict import get_prediction
-        # prediction = get_prediction(uploaded_file, patient_data)
+        if uploaded_file and filename:
+            # Save the uploaded file temporarily
+            filename = secure_filename(filename)
+            upload_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            uploaded_file.save(upload_path)
+            
+            # Get prediction with GradCAM
+            model_result = predict_with_gradcam(upload_path)
+            
+            # Copy GradCAM image to static/images/gradcam folder
+            if os.path.exists(model_result['gradcam_path']):
+                gradcam_filename = os.path.basename(model_result['gradcam_path'])
+                destination_path = os.path.join(app.config['GRADCAM_FOLDER'], gradcam_filename)
+                
+                # Ensure destination directory exists
+                os.makedirs(app.config['GRADCAM_FOLDER'], exist_ok=True)
+                
+                # Copy the GradCAM image
+                import shutil
+                shutil.copy(model_result['gradcam_path'], destination_path)
+                
+                prediction = {
+                    'cancer_type': model_result['prediction'],
+                    'probability': model_result['confidence'],
+                    'confidence': 'high' if model_result['confidence'] > 0.75 else 'moderate' if model_result['confidence'] > 0.50 else 'low'
+                }
+                gradcam_url = f'/static/images/gradcam/{gradcam_filename}'
+            else:
+                raise Exception("GradCAM image generation failed")
+        else:
+            raise Exception("No file uploaded for prediction")
         
         # ============================================
         # 3. GENERATE AI EXPLANATION USING GEMINI
@@ -160,7 +187,7 @@ def predict():
             'probability': prediction['probability'],
             'confidence': prediction['confidence'],
             'explanation': ai_explanation,
-            'heatmap': f'/static/uploads/{filename}'  # Placeholder heatmap
+            'heatmap': gradcam_url
         })
         
     except Exception as e:
@@ -171,6 +198,7 @@ def predict():
         }), 500
 
 if __name__ == '__main__':
-    # Create uploads folder if it doesn't exist
+    # Create necessary folders if they don't exist
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    os.makedirs(app.config['GRADCAM_FOLDER'], exist_ok=True)
     app.run(debug=True, port=5000)
