@@ -1,0 +1,394 @@
+{% extends "base.html" %}
+
+{% block title %}Home - DermaDetectAI{% endblock %}
+
+{% block extra_css %}
+<!-- Swiper CSS for Image Slider -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="hero-title">
+                    AI-Powered <span class="text-gradient">Skin Cancer</span> Detection
+                </h1>
+                <p class="hero-subtitle">
+                    Upload a dermoscopic image and get instant analysis powered by deep learning trained on the HAM10000 dataset.
+                </p>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>7 Cancer Types Detection</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Instant AI Analysis</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>Heatmap Visualization</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-image">
+                    <img src="https://img.icons8.com/cotton/500/000000/microscope--v2.png" alt="Medical Analysis" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Analysis Section -->
+<section class="analysis-section py-5">
+    <div class="container">
+        <div class="row g-4">
+            
+            <!-- Left Column: Example Images Slider -->
+            <div class="col-lg-5">
+                <div class="card card-medical h-100">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">
+                            <i class="bi bi-images text-primary-custom"></i> Example Images
+                        </h4>
+                        <p class="text-muted small mb-4">
+                            Reference dermoscopic images from HAM10000 dataset
+                        </p>
+                        
+                        <!-- Swiper Slider -->
+<div class="swiper exampleSwiper">
+    <div class="swiper-wrapper">
+        {% if example_images %}
+            {% for image in example_images %}
+            <div class="swiper-slide">
+                <img src="{{ url_for('static', filename='images/examples/' ~ image) }}" 
+                     alt="{{ image }}" 
+                     class="slider-image">
+                <div class="slider-caption">{{ image.replace('.jpg', '').replace('_', ' ') }}</div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="swiper-slide">
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    No example images found. Please add images to static/images/examples/
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+                        
+                        <div class="alert alert-info mt-4 mb-0">
+    <i class="bi bi-info-circle-fill me-2"></i>
+    <small><strong>Note:</strong> Upload similar dermoscopic images for best results</small>
+</div>
+
+<!-- Photography Tips -->
+<div class="photo-tips mt-3">
+    <h6 class="tips-title">
+        <i class="bi bi-camera-fill me-2"></i>Photography Tips
+    </h6>
+    <ul class="tips-list">
+        <li><i class="bi bi-check-circle-fill"></i> Use good, natural lighting (avoid flash)</li>
+        <li><i class="bi bi-check-circle-fill"></i> Keep the camera steady and focused</li>
+        <li><i class="bi bi-check-circle-fill"></i> Take close-up shots of the lesion</li>
+        <li><i class="bi bi-check-circle-fill"></i> Avoid shadows on the skin area</li>
+        <li><i class="bi bi-check-circle-fill"></i> Capture the entire lesion clearly</li>
+        <li><i class="bi bi-check-circle-fill"></i> Use a dermatoscope if available</li>
+    </ul>
+</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Upload & Patient Information Form -->
+            <div class="col-lg-7">
+                <div class="card card-medical h-100">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3">
+                            <i class="bi bi-cloud-upload-fill text-primary-custom"></i> Upload & Analyze
+                        </h4>
+                        
+                        <form id="analysisForm">
+                            
+                            <!-- Image Upload Section -->
+                            <div class="upload-section mb-4">
+                                <div class="upload-area" id="uploadArea">
+                                    <input type="file" id="imageInput" accept="image/*" hidden>
+                                    <div class="upload-placeholder" id="uploadPlaceholder">
+                                        <i class="bi bi-cloud-arrow-up upload-icon"></i>
+                                        <h5>Drag & Drop Image Here</h5>
+                                        <p class="text-muted">or click to browse</p>
+                                        <span class="badge bg-secondary">Max size: 5MB | JPG, PNG</span>
+                                    </div>
+                                    <div class="upload-preview" id="uploadPreview" style="display: none;">
+                                        <img id="previewImage" alt="Preview" class="preview-img">
+                                        <button type="button" class="btn-remove-image" id="removeImage">
+                                            <i class="bi bi-x-circle-fill"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Patient Information -->
+                            <h5 class="section-title mb-3">
+                                <i class="bi bi-person-fill-check"></i> Patient Information
+                            </h5>
+                            
+                            <div class="row g-3">
+                                <!-- Age -->
+                                <div class="col-md-6">
+                                    <label for="age" class="form-label">Age <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="age" min="1" max="120" required>
+                                </div>
+                                
+                                <!-- Gender -->
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="gender" required>
+                                        <option value="">Select...</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Skin Type -->
+                                <div class="col-md-6">
+                                    <label for="skinType" class="form-label">Skin Type (Fitzpatrick Scale)</label>
+                                    <select class="form-select" id="skinType">
+                                        <option value="">Select...</option>
+                                        <option value="I">Type I - Very Fair</option>
+                                        <option value="II">Type II - Fair</option>
+                                        <option value="III">Type III - Medium</option>
+                                        <option value="IV">Type IV - Olive</option>
+                                        <option value="V">Type V - Brown</option>
+                                        <option value="VI">Type VI - Dark Brown</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Location on Body -->
+                                <div class="col-md-6">
+                                    <label for="location" class="form-label">Location on Body <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="location" required>
+                                        <option value="">Select...</option>
+                                        <option value="face">Face</option>
+                                        <option value="neck">Neck</option>
+                                        <option value="chest">Chest</option>
+                                        <option value="back">Back</option>
+                                        <option value="arms">Arms</option>
+                                        <option value="legs">Legs</option>
+                                        <option value="hands">Hands</option>
+                                        <option value="feet">Feet</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Lesion Size -->
+                                <div class="col-md-6">
+                                    <label for="lesionSize" class="form-label">Lesion Size</label>
+                                    <select class="form-select" id="lesionSize">
+                                        <option value="">Select...</option>
+                                        <option value="small">Less than 5mm</option>
+                                        <option value="medium">5-10mm</option>
+                                        <option value="large">Greater than 10mm</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Duration -->
+                                <div class="col-md-6">
+                                    <label for="duration" class="form-label">How long have you noticed it?</label>
+                                    <select class="form-select" id="duration">
+                                        <option value="">Select...</option>
+                                        <option value="recent">Less than 1 month</option>
+                                        <option value="few-months">1-6 months</option>
+                                        <option value="long">More than 6 months</option>
+                                        <option value="years">Years</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Family History -->
+                                <div class="col-md-6">
+                                    <label for="familyHistory" class="form-label">Family History of Skin Cancer</label>
+                                    <select class="form-select" id="familyHistory">
+                                        <option value="">Select...</option>
+                                        <option value="yes">Yes</option>
+                                        <option value="no">No</option>
+                                        <option value="unknown">Don't Know</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Sun Exposure -->
+                                <div class="col-md-6">
+                                    <label for="sunExposure" class="form-label">Sun Exposure Level</label>
+                                    <select class="form-select" id="sunExposure">
+                                        <option value="">Select...</option>
+                                        <option value="low">Low (Mostly indoors)</option>
+                                        <option value="moderate">Moderate (Some outdoor activity)</option>
+                                        <option value="high">High (Frequent outdoor exposure)</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Symptoms -->
+                                <div class="col-12">
+                                    <label class="form-label">Symptoms (Select all that apply)</label>
+                                    <div class="symptoms-checkbox">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomItching" value="itching">
+                                            <label class="form-check-label" for="symptomItching">Itching</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomBleeding" value="bleeding">
+                                            <label class="form-check-label" for="symptomBleeding">Bleeding</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomPain" value="pain">
+                                            <label class="form-check-label" for="symptomPain">Pain/Tenderness</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomGrowing" value="growing">
+                                            <label class="form-check-label" for="symptomGrowing">Growing in size</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomColorChange" value="color-change">
+                                            <label class="form-check-label" for="symptomColorChange">Changing color</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="symptomNone" value="none">
+                                            <label class="form-check-label" for="symptomNone">No symptoms</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Additional Notes -->
+                                <div class="col-12">
+                                    <label for="additionalNotes" class="form-label">Additional Notes (Optional)</label>
+                                    <textarea class="form-control" id="additionalNotes" rows="3" placeholder="Any other relevant information..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-medical btn-lg" id="startAnalysisBtn">
+                                    <i class="bi bi-cpu-fill me-2"></i>
+                                    Start AI Analysis
+                                </button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Results Section (Hidden Initially) -->
+<section class="results-section py-5" id="resultsSection" style="display: none;">
+    <div class="container">
+        <div class="card card-medical">
+            <div class="card-body">
+                <h4 class="card-title mb-4">
+                    <i class="bi bi-graph-up-arrow text-primary-custom"></i> Analysis Results
+                </h4>
+                
+                <!-- Skeleton Loader (Shows during analysis) -->
+                <div id="skeletonLoader" class="skeleton-loader">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="skeleton skeleton-title"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-text"></div>
+                            <div class="skeleton skeleton-progress"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="skeleton skeleton-image"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Actual Results (Shows after analysis) -->
+                <div id="actualResults" style="display: none;">
+                    <div class="row g-4">
+                        
+                        <!-- Left: Prediction Details -->
+                        <div class="col-lg-6">
+                            <div class="result-card">
+                                <h5 class="result-label">
+                                    <i class="bi bi-clipboard2-pulse-fill"></i> Predicted Condition
+                                </h5>
+                                <h3 class="result-prediction" id="predictionType">Melanoma</h3>
+                                
+                                <h6 class="mt-4 mb-3">Confidence Level</h6>
+                                <div class="progress-container">
+                                    <div class="progress-wrapper">
+                                        <div class="progress" style="height: 30px;">
+                                            <div class="progress-bar" id="confidenceBar" role="progressbar" style="width: 0%">
+                                                <span id="confidenceText">0%</span>
+                                            </div>
+                                        </div>
+                                        <span class="confidence-label" id="confidenceLabel">Low</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-warning mt-4">
+                                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <strong>Important:</strong> This is a preliminary analysis. Please consult a dermatologist for professional diagnosis.
+                                </div>
+                                
+                                <h6 class="mt-4 mb-3">AI Explanation</h6>
+                                <div class="explanation-box" id="aiExplanation">
+                                    <p class="text-muted">Loading AI-generated explanation...</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Heatmap -->
+                        <div class="col-lg-6">
+                            <div class="result-card">
+                                <h5 class="result-label">
+                                    <i class="bi bi-thermometer-half"></i> Attention Heatmap
+                                </h5>
+                                <div class="heatmap-container">
+                                    <img id="heatmapImage" src="" alt="Heatmap" class="img-fluid rounded">
+                                </div>
+                                <p class="text-muted small mt-3">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    Red/yellow areas indicate regions the AI focused on during analysis
+                                </p>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <!-- Action Buttons -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-outline-primary me-2" onclick="window.print()">
+                            <i class="bi bi-printer-fill me-2"></i>Print Results
+                        </button>
+                        <button class="btn btn-medical" onclick="location.reload()">
+                            <i class="bi bi-arrow-clockwise me-2"></i>New Analysis
+                        </button>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+{% endblock %}

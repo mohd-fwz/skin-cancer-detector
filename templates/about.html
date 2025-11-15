@@ -1,0 +1,534 @@
+{% extends "base.html" %}
+
+{% block title %}Cancer Types - DermaDetectAI{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="hero-title">
+                <i class="bi bi-clipboard2-pulse-fill"></i> Skin Cancer Types
+            </h1>
+            <p class="hero-subtitle">
+                Understanding the 7 types of skin lesions detected by our AI model
+            </p>
+            <div class="hero-badge">
+                <span class="badge bg-primary-custom">Based on HAM10000 Dataset</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Introduction Section -->
+<section class="intro-section py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h2 class="section-heading">What is Skin Cancer?</h2>
+                <p class="text-justify">
+                    Skin cancer is the abnormal growth of skin cells, most often developing on skin exposed to the sun. However, it can also occur on areas not ordinarily exposed to sunlight. Early detection is crucial for successful treatment.
+                </p>
+                <p class="text-justify">
+                    Our AI model is trained to identify 7 different types of skin lesions using dermoscopic images from the HAM10000 dataset, which contains over 10,000 dermatoscopic images.
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="info-card">
+                    <h5 class="info-card-title">
+                        <i class="bi bi-exclamation-triangle-fill text-warning"></i> Early Detection Saves Lives
+                    </h5>
+                    <ul class="info-list">
+                        <li><i class="bi bi-check-circle-fill"></i> Skin cancer is the most common cancer worldwide</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Early detection increases survival rate to 99%</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Regular self-examination is recommended</li>
+                        <li><i class="bi bi-check-circle-fill"></i> Annual dermatologist check-ups are important</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ABCDE Rule Section -->
+<section class="abcde-section py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-heading">The ABCDE Rule of Melanoma</h2>
+            <p class="text-muted">A simple guide to identify suspicious moles</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4 col-lg-2">
+                <div class="abcde-card">
+                    <div class="abcde-letter">A</div>
+                    <h5>Asymmetry</h5>
+                    <p>One half doesn't match the other half</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="abcde-card">
+                    <div class="abcde-letter">B</div>
+                    <h5>Border</h5>
+                    <p>Edges are irregular, ragged, or blurred</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="abcde-card">
+                    <div class="abcde-letter">C</div>
+                    <h5>Color</h5>
+                    <p>Color is not uniform throughout</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="abcde-card">
+                    <div class="abcde-letter">D</div>
+                    <h5>Diameter</h5>
+                    <p>Larger than 6mm (size of a pencil eraser)</p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-2">
+                <div class="abcde-card">
+                    <div class="abcde-letter">E</div>
+                    <h5>Evolving</h5>
+                    <p>Changing in size, shape, or color</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Cancer Types Section -->
+<section class="cancer-types-section py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="section-heading">7 Types Our AI Detects</h2>
+            <p class="text-muted">Click on any cancer type to learn more</p>
+        </div>
+        
+        <!-- Cancer Type Buttons -->
+        <div class="cancer-buttons-grid mb-5">
+            <button class="cancer-type-btn active" data-cancer="melanoma">
+                <div class="btn-icon">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-danger">High Risk</span>
+                    <h5>Melanoma</h5>
+                    <p class="cancer-code">mel</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="bcc">
+                <div class="btn-icon">
+                    <i class="bi bi-shield-fill-exclamation"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-warning">Moderate</span>
+                    <h5>Basal Cell</h5>
+                    <p class="cancer-code">bcc</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="akiec">
+                <div class="btn-icon">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-warning">Precancerous</span>
+                    <h5>Actinic Keratoses</h5>
+                    <p class="cancer-code">akiec</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="bkl">
+                <div class="btn-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-success">Benign</span>
+                    <h5>Benign Keratosis</h5>
+                    <p class="cancer-code">bkl</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="df">
+                <div class="btn-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-success">Benign</span>
+                    <h5>Dermatofibroma</h5>
+                    <p class="cancer-code">df</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="nv">
+                <div class="btn-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-success">Benign</span>
+                    <h5>Melanocytic Nevi</h5>
+                    <p class="cancer-code">nv</p>
+                </div>
+            </button>
+            
+            <button class="cancer-type-btn" data-cancer="vasc">
+                <div class="btn-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <div class="btn-content">
+                    <span class="cancer-badge badge-success">Benign</span>
+                    <h5>Vascular Lesions</h5>
+                    <p class="cancer-code">vasc</p>
+                </div>
+            </button>
+        </div>
+        
+        <!-- Cancer Details Container -->
+        <div class="cancer-details-container">
+            
+            <!-- Melanoma Details -->
+            <div class="cancer-detail-card active" id="melanoma-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                        Melanoma (mel)
+                    </h3>
+                    <span class="cancer-badge badge-danger">High Risk</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What is Melanoma?</h5>
+                        <p>Melanoma is the most serious type of skin cancer. It develops in melanocytes (pigment-producing cells) and can spread to other parts of the body if not caught early.</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-exclamation-circle-fill text-danger"></i> Warning Signs:</h6>
+                        <ul class="cancer-list">
+                            <li>Mole that changes in size, shape, or color</li>
+                            <li>Asymmetrical mole with irregular borders</li>
+                            <li>Multiple colors within the same lesion</li>
+                            <li>Diameter larger than 6mm</li>
+                            <li>Bleeding, itching, or crusting</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-shield-fill-exclamation text-warning"></i> Risk Factors:</h6>
+                        <ul class="cancer-list">
+                            <li>Excessive UV exposure and sunburns</li>
+                            <li>Fair skin, light hair, and eyes</li>
+                            <li>Family history of melanoma</li>
+                            <li>Many moles or atypical moles</li>
+                            <li>Weakened immune system</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-danger">
+                            <h6><i class="bi bi-graph-up-arrow"></i> Statistics</h6>
+                            <p class="mb-2"><strong>Survival Rate (Early):</strong> 99%</p>
+                            <p class="mb-2"><strong>Survival Rate (Late):</strong> 27%</p>
+                            <p class="mb-0"><strong>Annual Cases:</strong> 100,000+ (US)</p>
+                        </div>
+                        <div class="alert alert-danger mt-3">
+                            <strong>⚠️ Urgent:</strong> Seek immediate medical attention if suspected.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BCC Details -->
+            <div class="cancer-detail-card" id="bcc-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-shield-fill-exclamation text-warning me-2"></i>
+                        Basal Cell Carcinoma (bcc)
+                    </h3>
+                    <span class="cancer-badge badge-warning">Moderate Risk</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What is Basal Cell Carcinoma?</h5>
+                        <p>The most common form of skin cancer. It begins in the basal cells and rarely spreads to other parts of the body, but can be locally destructive if not treated.</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-exclamation-circle-fill text-warning"></i> Warning Signs:</h6>
+                        <ul class="cancer-list">
+                            <li>Pearly or waxy bump on face, ears, or neck</li>
+                            <li>Flat, flesh-colored or brown scar-like lesion</li>
+                            <li>Bleeding or scabbing sore that heals and returns</li>
+                            <li>Pink growth with raised border and central indentation</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-shield-fill-exclamation text-warning"></i> Risk Factors:</h6>
+                        <ul class="cancer-list">
+                            <li>Chronic sun exposure</li>
+                            <li>Fair skin and light eyes</li>
+                            <li>Age over 50</li>
+                            <li>Radiation therapy history</li>
+                            <li>Arsenic exposure</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-warning">
+                            <h6><i class="bi bi-graph-up-arrow"></i> Statistics</h6>
+                            <p class="mb-2"><strong>Curability:</strong> Nearly 100%</p>
+                            <p class="mb-2"><strong>Metastasis Risk:</strong> Very Low</p>
+                            <p class="mb-0"><strong>Annual Cases:</strong> 3.6 million (US)</p>
+                        </div>
+                        <div class="alert alert-warning mt-3">
+                            <strong>💡 Note:</strong> Highly treatable when detected early.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AKIEC Details -->
+            <div class="cancer-detail-card" id="akiec-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-exclamation-circle-fill text-warning me-2"></i>
+                        Actinic Keratoses (akiec)
+                    </h3>
+                    <span class="cancer-badge badge-warning">Precancerous</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What is Actinic Keratoses?</h5>
+                        <p>A precancerous skin growth caused by sun damage. While not cancer itself, it can develop into squamous cell carcinoma if left untreated. Also includes Bowen's disease (intraepithelial carcinoma).</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-exclamation-circle-fill text-warning"></i> Warning Signs:</h6>
+                        <ul class="cancer-list">
+                            <li>Rough, dry, or scaly patch on sun-exposed skin</li>
+                            <li>Flat to slightly raised patch or bump</li>
+                            <li>Color variations: pink, red, or brown</li>
+                            <li>Itching or burning sensation</li>
+                            <li>Crusty or bleeding lesions</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-shield-fill-exclamation text-warning"></i> Risk Factors:</h6>
+                        <ul class="cancer-list">
+                            <li>Frequent or intense sun exposure</li>
+                            <li>Fair skin, blonde or red hair</li>
+                            <li>Age over 40</li>
+                            <li>History of sunburns</li>
+                            <li>Weakened immune system</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-warning">
+                            <h6><i class="bi bi-graph-up-arrow"></i> Statistics</h6>
+                            <p class="mb-2"><strong>Cancer Risk:</strong> 5-10%</p>
+                            <p class="mb-2"><strong>Preventable:</strong> Yes</p>
+                            <p class="mb-0"><strong>Treatment:</strong> Very effective</p>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <strong>✓ Prevention:</strong> Use sunscreen and avoid sun exposure.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- BKL Details -->
+            <div class="cancer-detail-card" id="bkl-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Benign Keratosis (bkl)
+                    </h3>
+                    <span class="cancer-badge badge-success">Benign</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What is Benign Keratosis?</h5>
+                        <p>A non-cancerous skin growth that includes seborrheic keratoses, solar lentigines (age spots), and lichen planus-like keratoses. These are harmless but can sometimes be confused with skin cancer.</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-info-circle-fill text-success"></i> Characteristics:</h6>
+                        <ul class="cancer-list">
+                            <li>Waxy, scaly, slightly raised growths</li>
+                            <li>Color: tan, brown, or black</li>
+                            <li>Appear "stuck on" to the skin</li>
+                            <li>Common on face, chest, shoulders, or back</li>
+                            <li>Usually painless</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-check-circle-fill text-success"></i> Key Points:</h6>
+                        <ul class="cancer-list">
+                            <li>Not caused by sun exposure</li>
+                            <li>Common in people over 50</li>
+                            <li>Often hereditary</li>
+                            <li>No treatment required unless cosmetic concern</li>
+                            <li>Does not turn into cancer</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-success">
+                            <h6><i class="bi bi-shield-check"></i> Good News</h6>
+                            <p class="mb-2"><strong>Cancer Risk:</strong> None</p>
+                            <p class="mb-2"><strong>Harmless:</strong> Yes</p>
+                            <p class="mb-0"><strong>Common:</strong> Very</p>
+                        </div>
+                        <div class="alert alert-success mt-3">
+                            <strong>✓ Safe:</strong> No medical treatment needed in most cases.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- DF Details -->
+            <div class="cancer-detail-card" id="df-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Dermatofibroma (df)
+                    </h3>
+                    <span class="cancer-badge badge-success">Benign</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What is Dermatofibroma?</h5>
+                        <p>A common benign skin growth made up of fibrous tissue. It's harmless and often appears after a minor injury like an insect bite or splinter.</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-info-circle-fill text-success"></i> Characteristics:</h6>
+                        <ul class="cancer-list">
+                            <li>Small, firm bump under the skin</li>
+                            <li>Color: pink, red, gray, or brown</li>
+                            <li>Usually less than 1cm in diameter</li>
+                            <li>Dimples inward when pinched</li>
+                            <li>Common on legs and arms</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-check-circle-fill text-success"></i> Key Points:</h6>
+                        <ul class="cancer-list">
+                            <li>More common in women</li>
+                            <li>May be itchy or tender</li>
+                            <li>Remains stable over time</li>
+                            <li>No treatment necessary</li>
+                            <li>Completely harmless</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-success">
+                            <h6><i class="bi bi-shield-check"></i> Assessment</h6>
+                            <p class="mb-2"><strong>Cancer Risk:</strong> None</p>
+                            <p class="mb-2"><strong>Removal:</strong> Optional</p>
+                            <p class="mb-0"><strong>Recurrence:</strong> Rare</p>
+                        </div>
+                        <div class="alert alert-success mt-3">
+                            <strong>✓ Harmless:</strong> No cause for concern.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- NV Details -->
+            <div class="cancer-detail-card" id="nv-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Melanocytic Nevi (nv)
+                    </h3>
+                    <span class="cancer-badge badge-success">Benign</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What are Melanocytic Nevi?</h5>
+                        <p>Commonly known as moles, these are benign skin growths made up of melanocytes (pigment cells). Most people have 10-40 moles, which are usually harmless.</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-info-circle-fill text-success"></i> Characteristics:</h6>
+                        <ul class="cancer-list">
+                            <li>Round or oval shape</li>
+                            <li>Color: pink, tan, brown, or black</li>
+                            <li>Flat or raised</li>
+                            <li>Symmetrical with smooth borders</li>
+                            <li>Uniform color throughout</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-eye-fill text-info"></i> When to Monitor:</h6>
+                        <ul class="cancer-list">
+                            <li>If the mole changes in size, shape, or color</li>
+                            <li>New moles appearing after age 30</li>
+                            <li>More than 50 moles total</li>
+                            <li>Moles larger than 6mm</li>
+                            <li>Family history of melanoma</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-success">
+                            <h6><i class="bi bi-shield-check"></i> Information</h6>
+                            <p class="mb-2"><strong>Cancer Risk:</strong> Very Low</p>
+                            <p class="mb-2"><strong>Normal:</strong> 10-40 moles</p>
+                            <p class="mb-0"><strong>Monitoring:</strong> Recommended</p>
+                        </div>
+                        <div class="alert alert-info mt-3">
+                            <strong>💡 Tip:</strong> Self-examine moles monthly using ABCDE rule.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- VASC Details -->
+            <div class="cancer-detail-card" id="vasc-detail">
+                <div class="detail-header">
+                    <h3>
+                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                        Vascular Lesions (vasc)
+                    </h3>
+                    <span class="cancer-badge badge-success">Benign</span>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-lg-8">
+                        <h5 class="cancer-subtitle">What are Vascular Lesions?</h5>
+                        <p>Benign skin growths involving blood vessels. This category includes angiomas (cherry angiomas), angiokeratomas, pyogenic granulomas, and hemorrhage (bleeding into the skin).</p>
+                        
+                        <h6 class="mt-4"><i class="bi bi-info-circle-fill text-success"></i> Types & Characteristics:</h6>
+                        <ul class="cancer-list">
+                            <li><strong>Cherry Angiomas:</strong> Bright red, dome-shaped bumps</li>
+                            <li><strong>Angiokeratomas:</strong> Dark red to black papules</li>
+                            <li><strong>Pyogenic Granulomas:</strong> Rapid-growing red bumps that bleed easily</li>
+                            <li><strong>Hemorrhage:</strong> Purple or red spots from broken blood vessels</li>
+                        </ul>
+                        
+                        <h6 class="mt-4"><i class="bi bi-check-circle-fill text-success"></i> Key Points:</h6>
+                        <ul class="cancer-list">
+                            <li>More common with age</li>
+                            <li>Usually harmless and painless</li>
+                            <li>Can bleed if injured</li>
+                            <li>Treatment for cosmetic reasons only</li>
+                            <li>No cancer risk</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="info-box info-box-success">
+                            <h6><i class="bi bi-shield-check"></i> Status</h6>
+                            <p class="mb-2"><strong>Cancer Risk:</strong> None</p>
+                            <p class="mb-2"><strong>Harmless:</strong> Yes</p>
+                            <p class="mb-0"><strong>Common:</strong> Very</p>
+                        </div>
+                        <div class="alert alert-success mt-3">
+                            <strong>✓ Safe:</strong> No medical concern in most cases.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section py-5 bg-light">
+    <div class="container text-center">
+        <h3 class="mb-3">Concerned About a Skin Lesion?</h3>
+        <p class="text-muted mb-4">Use our AI-powered detection tool for preliminary analysis</p>
+        <a href="/" class="btn btn-medical btn-lg">
+            <i class="bi bi-cpu-fill me-2"></i>Analyze Now
+        </a>
+        <div class="mt-4">
+            <small class="text-muted">
+                <i class="bi bi-shield-fill-check me-1"></i>
+                Remember: Always consult a dermatologist for professional diagnosis
+            </small>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
