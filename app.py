@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request, jsonify
 import os
+import json
+import random
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv 
+from gemini_helper import generate_medical_explanation
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -19,10 +25,53 @@ def get_example_images():
     if os.path.exists(examples_folder):
         images = [f for f in os.listdir(examples_folder) 
                  if f.lower().endswith(('.jpg', '.jpeg', '.png'))]
-        return sorted(images)  # Sort alphabetically
+        return sorted(images)
     return []
 
-# Routes
+# ============================================
+# DUMMY ML MODEL (Temporary - for testing)
+# ============================================
+
+def dummy_ml_prediction(uploaded_filename):
+    """
+    Simulate ML model prediction
+    This will be replaced by your friend's actual model
+    
+    Returns dummy predictions for testing
+    """
+    
+    # List of possible cancer types
+    cancer_types = [
+        {'name': 'Melanoma (mel)', 'risk': 'high'},
+        {'name': 'Melanocytic Nevi (nv)', 'risk': 'low'},
+        {'name': 'Basal Cell Carcinoma (bcc)', 'risk': 'moderate'},
+        {'name': 'Actinic Keratoses (akiec)', 'risk': 'moderate'},
+        {'name': 'Benign Keratosis (bkl)', 'risk': 'low'},
+        {'name': 'Dermatofibroma (df)', 'risk': 'low'},
+        {'name': 'Vascular Lesions (vasc)', 'risk': 'low'}
+    ]
+    
+    # Randomly select a cancer type (for demo purposes)
+    selected = random.choice(cancer_types)
+    
+    # Generate random probability based on risk level
+    if selected['risk'] == 'high':
+        probability = random.uniform(0.70, 0.95)
+    elif selected['risk'] == 'moderate':
+        probability = random.uniform(0.50, 0.75)
+    else:
+        probability = random.uniform(0.60, 0.85)
+    
+    return {
+        'cancer_type': selected['name'],
+        'probability': round(probability, 2),
+        'confidence': 'high' if probability > 0.75 else 'moderate' if probability > 0.50 else 'low'
+    }
+
+# ============================================
+# ROUTES
+# ============================================
+
 @app.route('/')
 def home():
     example_images = get_example_images()
@@ -38,7 +87,7 @@ def team():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    # This will be used for image upload
+    """Handle image upload"""
     if 'file' not in request.files:
         return jsonify({'error': 'No file uploaded'}), 400
     
@@ -57,14 +106,69 @@ def upload_file():
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # This will be connected to your model later
-    # For now, we'll return dummy data
-    return jsonify({
-        'prediction': 'Melanocytic nevi (nv)',
-        'probability': 0.85,
-        'confidence': 'high',
-        'heatmap': 'path/to/heatmap.png'
-    })
+    """
+    Handle prediction request
+    Collects form data, gets ML prediction, generates AI explanation
+    """
+    
+    try:
+        # ============================================
+        # 1. COLLECT PATIENT DATA FROM FORM
+        # ============================================
+        
+        patient_data = {
+            'age': request.form.get('age'),
+            'gender': request.form.get('gender'),
+            'skin_type': request.form.get('skinType'),
+            'location': request.form.get('location'),
+            'lesion_size': request.form.get('lesionSize'),
+            'duration': request.form.get('duration'),
+            'family_history': request.form.get('familyHistory'),
+            'sun_exposure': request.form.get('sunExposure'),
+            'symptoms': request.form.get('symptoms'),  # This is a JSON string
+            'additional_notes': request.form.get('additionalNotes')
+        }
+        
+        # Get uploaded filename
+        uploaded_file = request.files.get('file')
+        filename = uploaded_file.filename if uploaded_file else None
+        
+        # ============================================
+        # 2. GET ML MODEL PREDICTION
+        # ============================================
+        
+        # DUMMY PREDICTION (Your friend will replace this)
+        prediction = dummy_ml_prediction(filename)
+        
+        # TODO: When your friend integrates the model, replace above with:
+        # from model.predict import get_prediction
+        # prediction = get_prediction(uploaded_file, patient_data)
+        
+        # ============================================
+        # 3. GENERATE AI EXPLANATION USING GEMINI
+        # ============================================
+        
+        ai_explanation = generate_medical_explanation(patient_data, prediction)
+        
+        # ============================================
+        # 4. RETURN RESULTS TO FRONTEND
+        # ============================================
+        
+        return jsonify({
+            'success': True,
+            'prediction': prediction['cancer_type'],
+            'probability': prediction['probability'],
+            'confidence': prediction['confidence'],
+            'explanation': ai_explanation,
+            'heatmap': f'/static/uploads/{filename}'  # Placeholder heatmap
+        })
+        
+    except Exception as e:
+        print(f"Error in prediction: {e}")
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     # Create uploads folder if it doesn't exist
