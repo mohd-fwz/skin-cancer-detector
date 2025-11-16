@@ -38,3 +38,4 @@ model/*.pth
 # GradCAM outputs
 gradcam_outputs/
 static/images/gradcam/
+static/images/gradcam_images/

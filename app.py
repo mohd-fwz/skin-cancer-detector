@@ -32,43 +32,7 @@ def get_example_images():
 
 # ============================================
 # DUMMY ML MODEL (Temporary - for testing)
-# ============================================
-
-def dummy_ml_prediction(uploaded_filename):
-    """
-    Simulate ML model prediction
-    This will be replaced by your friend's actual model
-    
-    Returns dummy predictions for testing
-    """
-    
-    # List of possible cancer types
-    cancer_types = [
-        {'name': 'Melanoma (mel)', 'risk': 'high'},
-        {'name': 'Melanocytic Nevi (nv)', 'risk': 'low'},
-        {'name': 'Basal Cell Carcinoma (bcc)', 'risk': 'moderate'},
-        {'name': 'Actinic Keratoses (akiec)', 'risk': 'moderate'},
-        {'name': 'Benign Keratosis (bkl)', 'risk': 'low'},
-        {'name': 'Dermatofibroma (df)', 'risk': 'low'},
-        {'name': 'Vascular Lesions (vasc)', 'risk': 'low'}
-    ]
-    
-    # Randomly select a cancer type (for demo purposes)
-    selected = random.choice(cancer_types)
-    
-    # Generate random probability based on risk level
-    if selected['risk'] == 'high':
-        probability = random.uniform(0.70, 0.95)
-    elif selected['risk'] == 'moderate':
-        probability = random.uniform(0.50, 0.75)
-    else:
-        probability = random.uniform(0.60, 0.85)
-    
-    return {
-        'cancer_type': selected['name'],
-        'probability': round(probability, 2),
-        'confidence': 'high' if probability > 0.75 else 'moderate' if probability > 0.50 else 'low'
-    }
+# =========================
 
 # ============================================
 # ROUTES

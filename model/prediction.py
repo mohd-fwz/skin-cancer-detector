@@ -7,7 +7,7 @@ from tensorflow.keras.preprocessing.image import load_img, img_to_array
 
 MODEL_PATH = "model/final_model.keras"
 CONF_THRESH = 0.60
-OUTPUT_DIR = "static/images/gradcam"
+OUTPUT_DIR = "static/images/gradcam_images"
 
 labels = ['akiec', 'bcc', 'bkl', 'df', 'mel', 'nv', 'vasc']
 label_full = {
